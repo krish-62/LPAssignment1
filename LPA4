@@ -1,0 +1,142 @@
+Linux Programming: Assignment-4
+NAME-GUJJULA MOHAN KRISHNA REDDY
+USN:ENG24CY0109
+Roll:50
+SEC-CY(C)
+
+Q1) A system has a file /etc/passwd. How would grep + tee be used to extract usernames and save them to a file while also displaying them on screen?
+    1. The file /etc/passwd contains details of all user accounts. The first field before : is the username.
+    2. To extract usernames:
+cut -d: -f1 /etc/passwd | grep "" | tee usernames.txt
+Explanation:
+    1. cut -d: -f1 → splits each line by : and takes the first field (the username).
+    2. grep "" → simply passes the output (can be used to filter specific names if needed).
+    3. tee usernames.txt → displays the usernames on screen and also saves them into usernames.txt.
+Sample Output:
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ cut -d: -f1 /etc/passwd | grep "" | tee usernames.txt
+root
+daemon
+bin
+sys
+sync
+games
+man
+lp
+mail
+news
+uucp
+proxy
+www-data
+backup
+list
+irc
+_apt
+systemd-network
+dhcpcd
+tss
+strongswan
+systemd-timesync
+messagebus
+tcpdump
+sshd
+dnsmasq
+avahi
+nm-openvpn
+
+
+
+
+
+Q2) A binary isn’t found in $PATH. How would commands (which, find, locate) be used to troubleshoot and fix the issue?
+    1. Check with which:
+    2. which binary_name
+If nothing is returned, the binary is not in $PATH.
+    3. Search with find:
+    4. find / -name binary_name 2>/dev/null
+This searches the entire filesystem.
+    5. Search with locate:
+    6. locate binary_name
+Faster, but relies on
+Once found, add its directory to $PATH:
+export PATH=$PATH:/path/to/binary
+To make it permanent, add that line in ~/.bashrc or ~/.profile.
+
+Q3) Write a command pipeline that finds all .log files modified in the last 24 hours in /var/log and saves results into log_report.txt.
+find /var/log -name "*.log" -mtime -1 | tee log_report.txt
+Explanation:
+    1. find /var/log → start searching in /var/log.
+    2. -name "*.log" → only .log files.
+    3. -mtime -1 → modified within the last 1 day (24 hours).
+    4. tee log_report.txt → display results on screen and save into log_report.txt.
+
+Q4) What is the difference between shutdown -r now and reboot?
+    • shutdown -r now
+        1. Initiates a proper shutdown sequence and then restarts the system.
+        2. Notifies users, stops processes safely, unmounts filesystems, then reboots.
+    • reboot
+        1. Directly reboots the system.
+        2. On modern systems (systemd), it also performs a safe shutdown internally, but traditionally it was a faster, less controlled restart.
+ Safer option: shutdown -r now because it ensures an orderly restart.
+
+Q5) How can the tee command be used to debug a script that generates both standard output and error messages?
+When running scripts, sometimes both stdout and stderr are needed for debugging.
+Example:
+./myscript.sh 2>&1 | tee debug.log
+Explanation:
+    1. 2>&1 → redirects error stream (stderr) into output stream (stdout).
+    2. tee debug.log → shows everything live on screen and also saves into debug.log.
+This way, both normal messages and error messages are captured for later analysis.
+
+Q6) Explain any three real-world applications of Linux in industries.
+    1. Web Servers:
+        1. Most web servers (Apache, Nginx) run on Linux.
+        2. Example: Google, Facebook, and most of the internet backbone.
+    2. Cloud & Virtualization:
+        1. AWS, Azure, and GCP use Linux as their foundation.
+        2. OpenStack, Docker, Kubernetes also depend heavily on Linux.
+    3. Embedded Systems:
+        1. Linux is used in routers, IoT devices, smart TVs, automotive infotainment (Android Auto).
+        2. Reliable, cost-effective, open-source choice.
+
+Q7) Differentiate application, system, and utility software in the context of Linux.
+    • Application Software
+        1. Programs for end-users.
+        2. Examples: LibreOffice, Firefox, GIMP.
+    • System Software
+        1. OS components that manage hardware and core functions.
+        2. Linux kernel, device drivers.
+    • Utility Software
+        1. Small programs that help maintain and optimize the system.
+        2. Examples: ls, top, df, grep.
+
+Q8) What are the key differences between open-source and proprietary operating systems?
+Aspect	Open-Source OS (Linux)	Proprietary OS (Windows/macOS)
+Source Code	Publicly available, can be modified	Closed, only vendor controls it
+Cost	Free or very low	Paid license or bundled cost
+Flexibility	Highly customizable	Limited customization
+Security	Audited by community, fast patches	Vendor dependent for fixes
+Support	Community + paid enterprise support	Vendor official support
+Examples	Linux, BSD	Windows, macOS
+
+Q9) Write the command to display the system’s kernel version.
+uname -r
+ Example Output:
+6.8.0-45-generic
+Alternatively:
+uname -a
+Shows kernel version plus architecture, hostname, and build details.
+
+Q10) What is the difference between head and tail commands in text processing?
+    • head command
+        1. Displays the first lines of a file (default: first 10 lines).
+        2. Example:
+        3. head logfile.txt
+    • tail command
+        1. Displays the last lines of a file (default: last 10 lines).
+        2. Example:
+        3. tail logfile.txt
+Options:
+    1. head -n 20 logfile.txt → first 20 lines.
+    2. tail -n 20 logfile.txt → last 20 lines.
+    3. tail -f logfile.txt → live monitoring (useful for logs).

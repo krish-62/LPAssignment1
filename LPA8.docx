@@ -1,0 +1,320 @@
+                        LINUX PROGRAMMING ASSIGNMENT-8
+
+NAME: GUJJULA MOHAN KRISHNA REDDY
+USN: ENG24CY0109
+ROLLNO & SEC: 50 'C' Sec
+
+Q1. What is a user-defined function in shell scripting? Explain with an example.
+
+-> A user defined function is a block of code that performs a specific task and can be reused when necessary. It makes the code more readable and reduces the repeatation.
+-> syntax:
+function_name() {
+    # commands
+}
+-> Ex:
+#!/bin/bash
+greet() {
+    echo "Hello, $1!"
+}
+greet "Itachi"
+
+Output: 
+Hello, Itachi!
+
+Q2. Write a bash script with a function that multiply two integer numbers.
+
+#!/bin/bash
+
+multiply() {
+    result=$(( $1 * $2 ))
+    echo "The product of $1 and $2 is: $result"
+}
+
+echo "Enter first number: "
+read num1
+echo "Enter second number: "
+read num2
+
+multiply $num1 $num2
+
+Terminal: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 1.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 1.sh                                                                                                                                                                              
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./1.sh                                                                                                                                                                                     
+Enter first number: 
+1
+Enter second number: 
+2
+The product of 1 and 2 is: 2
+
+
+Q3. Explain how arrays (1D, 2D, and 3D) are declared in bash scripting.
+
+-> Bash primarily supports 1D arrays, but you can simulate 2D or 3D arrays using associative arrays or index naming conventions.
+
+1D Array:
+
+arr=(10 20 30 40)
+echo ${arr[2]}   
+
+2D Array:
+
+matrix[0,0]=1
+matrix[0,1]=2
+matrix[1,0]=3
+matrix[1,1]=4
+
+echo ${matrix[1,1]}  # Access element at row 1, column 1
+
+3D Array:
+
+cube[0,0,0]=A
+cube[0,0,1]=B
+cube[1,1,1]=C
+echo ${cube[1,1,1]}
+
+Q4. Write a shell script to display elements of an array.
+
+#!/bin/bash
+
+arr=(10 20 30 40 50)
+
+echo "Array elements are:"
+for value in "${arr[@]}"
+do
+    echo "$value"
+done
+
+Terminal:
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 2.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 2.sh                                                                                                                                                                              
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./2.sh                                                                                                                                                                              
+Array elements are:
+10
+20
+30
+40
+50
+
+Q5. What is the purpose of cron in Linux?
+
+-> Cron is a daemon that executes scheduled tasks (called cron jobs) automatically at specified times or intervals.
+->Use crontab -e to edit cron jobs and crontab -l to list them.
+->Typical use: backups, updates, monitoring scripts, cleanup tasks.
+
+Q6. Write a cron job to run a backup script every day at midnight.
+
+->crontab -e
+->0 0 * * * /home/itachi/backup.sh
+
+-0 0 → 00:00 (midnight)
+-* * * → every day, every month, every weekday
+-/home/itachi/backup.sh → full path to script
+
+->crontab -l
+
+Q7. How do you schedule a one-time job using at command?
+
+->at schedules a one-time execution of a command or script at a specific time.
+
+ 1.sudo systemctl start atd
+ 2.at 10:00 PM
+ 3.bash /home/itachi/backup.sh
+ <Ctrl+D>
+ 4.atq
+ 5.atrm <job_id>
+
+Q8. Write a script to display disk usage using df and du.
+
+#!/bin/bash
+echo "Disk usage summary: "
+df -h            # Displays overall mounted filesystem usage
+
+echo
+echo "Current directory usage details: "
+du -sh *         # Displays size of each item in current directory
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 3.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 3.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./3.sh
+Disk usage summary: 
+Filesystem                       Size  Used Avail Use% Mounted on
+udev                             3.7G     0  3.7G   0% /dev
+tmpfs                            769M  1.7M  768M   1% /run
+/dev/mapper/Itachi--62--vg-root  459G   46G  390G  11% /
+tmpfs                            3.8G  117M  3.7G   4% /dev/shm
+efivarfs                         192K  133K   55K  71% /sys/firmware/efi/efivars
+tmpfs                            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/nvme0n1p2                   961M  286M  627M  32% /boot
+tmpfs                            3.8G  161M  3.6G   5% /tmp
+
+Q9. How can you log the output of a script using the tee command?
+
+#!/bin/bash
+echo "Starting system check..." | tee -a system.log
+date | tee -a system.log
+df -h | tee -a system.log
+echo "Check completed." | tee -a system.log
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 4.sh                                                                            
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 4.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./4.sh                                                                               
+Starting system check...
+Tuesday 07 October 2025 07:10:33 PM IST
+Filesystem                       Size  Used Avail Use% Mounted on
+udev                             3.7G     0  3.7G   0% /dev
+tmpfs                            769M  1.7M  768M   1% /run
+/dev/mapper/Itachi--62--vg-root  459G   46G  390G  11% /
+tmpfs                            3.8G  117M  3.7G   4% /dev/shm
+efivarfs                         192K  133K   55K  71% /sys/firmware/efi/efivars
+tmpfs                            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/nvme0n1p2                   961M  286M  627M  32% /boot
+tmpfs                            3.8G  161M  3.6G   5% /tmp
+/dev/loop5                       128K  128K     0 100% /snap/bare/5
+/dev/loop6                        74M   74M     0 100% /snap/core22/1802
+/dev/loop3                        92M   92M     0 100% /snap/gtk-common-themes/1535
+/dev/loop0                       517M  517M     0 100% /snap/gnome-42-2204/202
+/dev/loop2                       461M  461M     0 100% /snap/wine-platform-9-devel-core22/33
+/dev/loop1                        45M   45M     0 100% /snap/snapd/23771
+/dev/loop4                       7.0M  7.0M     0 100% /snap/notepad-plus-plus/412
+/dev/loop7                       544M  544M     0 100% /snap/wine-platform-runtime-core22/100
+/dev/nvme0n1p1                   975M  156K  974M   1% /boot/efi
+tmpfs                            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs                            769M  136K  769M   1% /run/user/1000
+Check completed.
+
+Q10. Explain with an example how shell scripting can automate system administration tasks.
+
+#!/bin/bash
+# system_monitor.sh — Daily health report
+
+LOGFILE="/var/log/system_report.log"
+
+{
+    echo "=== System Health Report ==="
+    date
+    echo "Hostname: $(hostname)"
+    echo "Uptime: $(uptime)"
+    echo
+    echo "Memory Usage:"
+    free -h
+    echo
+    echo "Disk Usage:"
+    df -h
+    echo
+    echo "Top 5 Processes by CPU:"
+    ps -eo pid,comm,%cpu --sort=-%cpu | head -n 6
+    echo "============================"
+    echo
+} | tee -a "$LOGFILE"
+
+The above script:
+ 1.Gathers system info automatically.
+ 2.Appends to /var/log/system_report.log.
+ 3.Can be scheduled in cron for daily runs:
+   0 8 * * * /home/itachi/system_monitor.sh
+
+Terminal: 
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 5.sh                                                                            
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 5.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./5.sh                                                                               
+tee: /var/log/system_report.log: Permission denied
+=== System Health Report ===
+Tuesday 07 October 2025 07:13:26 PM IST
+Hostname: itachi-62
+Uptime:  19:13:26 up 1 day,  8:44,  1 user,  load average: 0.18, 0.33, 0.33
+
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:           7.5Gi       3.5Gi       3.1Gi       341Mi       1.7Gi       4.1Gi
+Swap:          7.7Gi       1.6Gi       6.2Gi
+
+Disk Usage:
+Filesystem                       Size  Used Avail Use% Mounted on
+udev                             3.7G     0  3.7G   0% /dev
+tmpfs                            769M  1.7M  768M   1% /run
+/dev/mapper/Itachi--62--vg-root  459G   46G  390G  11% /
+tmpfs                            3.8G  117M  3.7G   4% /dev/shm
+efivarfs                         192K  133K   55K  71% /sys/firmware/efi/efivars
+tmpfs                            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/nvme0n1p2                   961M  286M  627M  32% /boot
+tmpfs                            3.8G  161M  3.6G   5% /tmp
+/dev/loop5                       128K  128K     0 100% /snap/bare/5
+/dev/loop6                        74M   74M     0 100% /snap/core22/1802
+/dev/loop3                        92M   92M     0 100% /snap/gtk-common-themes/1535
+/dev/loop0                       517M  517M     0 100% /snap/gnome-42-2204/202
+/dev/loop2                       461M  461M     0 100% /snap/wine-platform-9-devel-core22/33
+/dev/loop1                        45M   45M     0 100% /snap/snapd/23771
+/dev/loop4                       7.0M  7.0M     0 100% /snap/notepad-plus-plus/412
+/dev/loop7                       544M  544M     0 100% /snap/wine-platform-runtime-core22/100
+/dev/nvme0n1p1                   975M  156K  974M   1% /boot/efi
+tmpfs                            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs                            769M  136K  769M   1% /run/user/1000
+
+Top 5 Processes by CPU:
+    PID COMMAND         %CPU
+   9191 mousepad         1.2
+   2288 Xorg             0.7
+   3226 chrome           0.5
+   3089 chrome           0.3
+   5709 java             0.2
+============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,148 @@
+                             LINUX PROGRAMMING ASSIGNMENT-5
+
+NAME: GUJJULA MOHAN KRISHNA REDDY
+USN: ENG24CY0109
+ROLLNO & SEC: 50 'C' Sec
+
+Q1.What is a shell in Linux OS? How many categories of shell is currently exists in Linux? Why bash shell is very popular in Linux distribution?
+
+-> Shell is a command-line interpreter in Linux in which the users can interact with the OS by typing commands. The commands are translated by the shell into actions the OS can perform on.
+-> In most of the Linux Distro Bash is the default shell.
+-> It has rich features like command history, scripting,tab-completion,aliases, etc.
+-> Bash is compatible with the original Bourne shell but it is more powerful.
+-> Catogories of Shell:
+* Bourne shell(sh) and its derivatives: Bash,Dash, Korn shell(ksh),Zsh.
+* C shell(csh) and its derivatives: tcsh.
+
+Q2.What does the ls -Z command display?
+
+-> It displays SELinux security context info of the files.
+OUTPUT: 
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -Z
+?  add.sh                 ?  capture-01.kismet.netxml  ?  function-demo.sh        ?  myscript.sh                ?  sum.sh
+?  a.out                  ?  capture-01.log.csv        ?  Function-Demo.sh        ?  nmap_scan.txt              ?  temp1.c
+?  archlinux-x86_64.iso   ?  capture-02.cap            ?  hack1-01.cap            ?  packages.microsoft.gpg     ?  Templates
+?  array                  ?  capture-02.csv            ?  hack1-01.csv            ?  Pictures                   ?  test_camera.py
+?  array2.c               ?  capture-02.kismet.csv     ?  hack1-01.kismet.csv     ?  program                    ?  test.txt
+
+Q3.Write a command to list all hidden files in the current directory.
+
+->ls -a is the command that is used to list all the hidden files in the current directory. The -a option shows all the files including hidden ones.
+OUTPUT:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -a
+ .                      .BurpSuite                 Downloads                linuxprogramming         sample1.txt                 vampire_exec
+ ..                     .cache                     drone_basic_patrol.py    .local                   scan.txt                    .venv                                                         
+ add.sh                 .calc_history              DSModule1                LPA1.docx                selection.c                 Videos                                                        
+ a.out                  capture-01.cap             .face                    LPAssignment1.docx       selection.h                 virtualbox-7.0_7.0.26-168464~Debian~bookworm_amd64.deb        
+ archlinux-x86_64.iso   capture-01.csv             .face.icon               main                     selectionsort.c            'VirtualBox VMs'                                               
+ array                  capture-01.kismet.csv      firewall_log.txt         mg.c                     selection_sort.h            .vscode                                                       
+ array2.c               capture-01.kismet.netxml   first.sh                 missingele               sha256sums.txt              .vscode-oss
+
+Q4.Explain the difference between hard links and soft links (symbolic links) in Linux.
+
+Hard Link:
+-> Points directly to the file's data on the disk.
+-> File can be accessed even if the original file is deleted.
+-> But it cannot link directories across filesystems.
+
+Soft Link:
+-> It points to the path of the original file.
+-> If the original file is deleted, the symlink becomes broken.
+-> It can link across filesystems and directories.
+
+Q5.A file has permissions -rwxr-x--x. Explain who can read, write, and execute it.
+
+-> The first part (rwx) are the permissions that the owner or the user has on a file. Here the owner can read,write and execute the file.
+-> The Second part (r-X) are the permissions that a group has ona file. Here a group can read and execute, but cannot write.
+-> The third part (--x) are the permissions that others have and here the others can only execute the file.
+
+Q6.Write the command to change the group ownership of a file testfile.txt to group group2.
+
+->chgrp staff testfile.txt
+OUTPUT:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l testfile.txt                                                                                                                                                                         
+-rw-rw-r-- 1 itachi-62 itachi-62 0 Oct  7 11:58 testfile.txt
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ sudo chgrp group2 testfile.txt                                                                                                                                                             
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod 640 testfile.txt                                                                                                                                                                     
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l testfile.txt                                                                                                                                                             
+-rw-r----- 1 itachi-62 group2 0 Oct  7 11:58 testfile.txt
+
+Q7. Why is it dangerous to give 777 permissions to a file? Explain with an example.
+
+-> If you give 777 permissions to a file everyone can read,write,and execute the file.
+
+Q8.What is the difference between apropos (i.e., man -k) and whatis (i.e., man -f)?
+
+-> apropos (i.e., man -k) command is used to search the man pages for a keyword across descriptions.
+-> Ex: apropos copy--this command shows all the commnds related to "copy".
+OUTPUT:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ apropos copy                                                                                                                                                                               
+Clone (3pm)          - recursively copy Perl datatypes
+bcopy (3)            - copy byte sequence
+COPY (7)             - copy data between a file and a table
+copy_file_range (2)  - Copy a range of data from one file to another
+copysign (3)         - copy sign of a number
+copysignf (3)        - copy sign of a number
+copysignl (3)        - copy sign of a number
+cp (1)               - copy files and directories
+cpio (1)             - copy files to and from archives
+dd (1)               - convert and copy a file
+debconf-copydb (1)   - copy a debconf database
+getunwind (2)        - copy the unwind data to caller's buffer
+getutmp (3)          - copy utmp structure to utmpx, and vice versa
+getutmpx (3)         - copy utmp structure to utmpx, and vice versa
+git-checkout-index (1) - Copy files from the index to the working tree
+i686-w64-mingw32-objcopy (1) - copy and translate object files
+install (1)          - copy files and set attributes
+
+-> whatis (i.e., man -f) command is used to diaplay a one line description of a specific command.
+-> Ex: whatis cp -- this command shows only the descrion of cp.
+OUTPUT: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ whatis cp                                                                                                                                                                                  
+cp (1)               - copy files and directories
+
+Q9.Write a command to redirect the error output of a command to a file named
+error.log.
+
+-> command 2> error.log - here 2> redirects file descriptor to a file.
+
+Q10.How can you use the tee command to append output to a file instead of
+overwriting it?
+
+-> command | tee -a filename- here -a option makes tee append to the file instead of overwriting it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

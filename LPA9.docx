@@ -1,0 +1,339 @@
+                        LINUX PROGRAMMING ASSIGNMENT-9
+
+NAME: GUJJULA MOHAN KRISHNA REDDY
+USN: ENG24CY0109
+ROLLNO & SEC: 50 'C' Sec
+
+
+Q1. Write a shell script using if…else to check if a number is even or odd.
+
+#!/bin/bash
+read -p "Enter a number: " num
+
+if [ $((num % 2)) -eq 0 ]; then
+    echo "$num is Even"
+else
+    echo "$num is Odd"
+fi
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 6.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 6.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./6.sh                                                                        
+Enter a number: 3
+3 is Odd
+
+Q2. Explain the difference between if and case statements in bash.
+
+if statement:-
+-> It is used for conditional checking.
+-> It uses relational operators like -eq,-gt, etc.
+-> Ex: 
+if [ $x -eq 10 ]; then 
+echo "Equal"; 
+fi
+-> It can be used for numeric and range comparisons.
+
+case staement:-
+-> It is used for pattern matching,
+-> it uses patterns like a), b), *).
+-> Ex: 
+case $x in 
+10) echo "Equal";; 
+*) echo "Not Equal";; 
+esac
+-> It is used in menu-based or multiple-choice conditions.
+
+Q3. Write a script to find the largest of three numbers entered by the user.
+
+#!/bin/bash
+read -p "Enter three numbers: " a b c
+
+if [ $a -ge $b ] && [ $a -ge $c ]; then
+    echo "$a is the largest"
+elif [ $b -ge $a ] && [ $b -ge $c ]; then
+    echo "$b is the largest"
+else
+    echo "$c is the largest"
+fi
+
+Terminal: 
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 7.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 7.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./7.sh                                                                        
+Enter three numbers: 1 2 3
+3 is the largest
+
+Q4. How do you use a for loop to traverse an array in bash? Give an example. The array is defined as arr=(123, “Abs”, -2.3, ‘A’, 23.56, 0). 
+
+#!/bin/bash
+arr=(123 "Abs" -2.3 'A' 23.56 0)
+
+for element in "${arr[@]}"; do
+    echo "$element"
+done
+
+Terminal: 
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 8.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 8.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./8.sh                                                                        
+123
+Abs
+-2.3
+A
+23.56
+0
+
+Q5. Write a shell script to loop through all files in the current directory and display their names.
+
+#!/bin/bash
+for file in *; do
+    echo "File: $file"
+done
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 9.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 9.sh                                                                        
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./9.sh                                                                        
+File: 123test_dir
+File: 1.sh
+File: 2.sh
+File: 3.sh
+File: 4.sh
+File: 5.sh
+File: 6.sh
+File: 7.sh
+File: 8.sh
+File: 9.sh
+File: add.sh
+File: a.out
+File: archlinux-x86_64.iso
+File: array
+File: array2.c
+File: array3.c
+File: array4.c
+File: array.c
+File: array_demo.sh
+File: arrayintersection.c
+File: binary.c
+File: bubble
+
+Q6. What is the difference between while and until loops in bash?
+
+while loop:-
+-> It will first check the condition and if the condition is true then it will run the code inside it if the condition is false it will not run the code not even once and will come out of the loop.
+-> Also know as pre-teted loop.
+-> Ex:
+       while [ $x -lt 5 ]
+-> This is used when you know the stop condition.
+
+until loop:-
+-> It will run until the condition becomes true.
+-> It is a pre-test loop.
+-> Ex: 
+       until [ $x -ge 5 ]
+-> This is used in opposite condition checking.
+
+Q7. Write a countdown timer script using a while loop.
+
+#!/bin/bash
+read -p "Enter countdown time in seconds: " t
+
+while [ $t -gt 0 ]; do
+    echo "Time left: $t seconds"
+    sleep 1
+    ((t--))
+done
+
+echo "Time’s up!"
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 10.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 10.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./10.sh                                                                       
+Enter countdown time in seconds: 10
+Time left: 10 seconds
+Time left: 9 seconds
+Time left: 8 seconds
+Time left: 7 seconds
+Time left: 6 seconds
+Time left: 5 seconds
+Time left: 4 seconds
+Time left: 3 seconds
+Time left: 2 seconds
+Time left: 1 seconds
+Time’s up!
+
+Q8. How do you use break and continue statements in loops? Give examples.
+
+->break:
+
+for i in {1..10}; do
+  if [ $i -eq 5 ]; then
+    break
+  fi
+  echo "Count: $i"
+done
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 11.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 11.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./11.sh                                                                       
+Count: 1
+Count: 2
+Count: 3
+Count: 4
+
+->continue:
+
+for i in {1..10}; do
+  if [ $i -eq 5 ]; then
+    continue
+  fi
+  echo "Count: $i"
+done
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 12.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 12.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./12.sh                                                                       
+Count: 1
+Count: 2
+Count: 3
+Count: 4
+Count: 6
+Count: 7
+Count: 8
+Count: 9
+Count: 10
+
+Q9. Write a script to check if a file exists or not using the if and else loop. 
+
+#!/bin/bash
+read -p "Enter file name: " file
+
+if [ -e "$file" ]; then
+    echo "File '$file' exists."
+else
+    echo "File '$file' does not exist."
+fi
+
+Terminal:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 13.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 13.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./13.sh                                                                       
+Enter file name: demo.c
+File 'demo.c' exists.
+
+Q10. Write a script to calculate factorial of a number using for loop.
+
+#!/bin/bash
+read -p "Enter a number: " n
+fact=1
+
+for (( i=1; i<=n; i++ ))
+do
+    fact=$((fact * i))
+done
+
+echo "Factorial of $n is $fact"
+
+Terminal: 
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ nano 14.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x 14.sh                                                                       
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./14.sh                                                                       
+Enter a number: 56
+Factorial of 56 is 6908521828386340864
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

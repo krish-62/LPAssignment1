@@ -1,0 +1,198 @@
+                        LINUX PROGRAMMING ASSIGNMENT-7
+
+NAME: GUJJULA MOHAN KRISHNA REDDY
+USN: ENG24CY0109
+ROLLNO & SEC: 50 'C' Sec
+
+Q1. What is a bash shell script? Give one example. 
+
+-> A Bash shell script is a text file that contains a set of commands written for the Bash interpreter to execute automatically. Instead of typing each command manually, it is also used to automate tasks by running the script.
+EX:
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x demo.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ./demo.sh
+This is my first Bash script!
+
+Q2. Write a simple shell script to print “Hello World”. 
+
+-> ┌──(itachi-62㉿itachi-62)-[~]
+└─$ echo "Hello World!" >> hello.sh
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ chmod +x hello.sh                                                                                                                                                                          
+./hello.sh
+Hello World
+
+Q3. What is the purpose of comments (#) in a shell script? 
+
+-> When you want to add comments to your script you use #. when you use # the text that is written in that line is ignored by the shell 
+EX:
+
+#!/bin/bash
+# This script prints a greeting
+echo "Hello World"  # This prints text to the screen
+
+Q4. How do you declare variables (int, float, double, string, Boolean, and char
+in a shell script?
+
+-> Actually in bash everything is a string by default unlike C, Python or any other language they use datatypes but in bash everything is string by default.
+
+int- Used with $(( )) for math → sum=$((num + 5)).
+float/double- Bash doesn’t support float math natively. Use bc or awk: `echo "$num + 1.2".
+string- Access with $name.
+boolean- Evaluate with if [ "$flag" = true ].
+char- Treated as a one-character string.
+
+Q5. Write a shell script to display the current date and time of the system.
+
+#!/bin/bash
+echo "Current date and time: $(date)"
+
+output: 
+Current date and time: Tue Oct 7 12:42:10 IST 2025
+
+Q6. Explain the difference between a constant and a variable in bash script.
+
+-> A variable is a name under which a value can be stored, and can be used during the executrion of the script.
+Ex: 
+count=5
+count=$((count + 1))
+echo $count   
+
+Output: 6
+
+-> A constant is a variable whose value will never change.
+readonly PI=3.14159
+echo $PI
+PI=5   
+
+Error: bash: PI: readonly variable
+
+Q7. Write a shell script to read two integer number from the user and compute the
+sum of both the number. 
+
+#!/bin/bash
+echo "Enter first number: "
+read num1
+echo "Enter second number: "
+read num2
+sum=$((num1 + num2))
+echo "The sum is: $sum"
+
+Q8. What is the use of source command in shell scripting?
+
+-> The source command executes a script in the current shell instead of spawning a new one.
+-> It is useful for loading environment variables or functions into your current shell session.
+Ex:
+source config.sh
+
+Q9. How can you debug a shell script? Give two methods.
+
+Method 1: Add -x when running the script:
+
+bash -x script.sh
+
+It prints each command before executing it, useful for tracing.
+
+Method 2: Add set -x and set +x inside the script:
+
+#!/bin/bash
+set -x  # Start debugging
+echo "Running script..."
+set +x  # Stop debugging
+echo "Done."
+
+Q10. Write a bash script to create and delete a file.
+
+#!/bin/bash
+
+echo "Enter a filename to create:"
+read filename
+touch "$filename"
+echo "File '$filename' created successfully."
+echo "Do you want to delete it? (y/n)"
+read ans
+if [ "$ans" = "y" ]; then
+    rm "$filename"
+    echo "File '$filename' deleted."
+else
+    echo "File not deleted."
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

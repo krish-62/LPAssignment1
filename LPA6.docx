@@ -1,0 +1,155 @@
+                        LINUX PROGRAMMING ASSIGNMENT-6
+
+NAME: GUJJULA MOHAN KRISHNA REDDY
+USN: ENG24CY0109
+ROLLNO & SEC: 50 'C' Sec
+
+Q1.Which command is used to list the contents of a directory? Justify with proper
+example.
+
+-> ls command is used to list the contents of a directory.
+-> ls is the standard utility to list files and directories. It has options to show long details, hidden files, sort, etc.
+Ex:
+->ls
+output: ┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls                                                                                                                                                                                         
+ add.sh                 capture-01.csv             drone_basic_patrol.py    linuxprogramming         sample1.txt                 vampire
+ a.out                  capture-01.kismet.csv      DSModule1                LPA1.docx                scan.txt                    vampire1.c
+
+->ls -l --Long listing (shows permissions, links, owner, group, size, timestamp, name)
+output: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l                                                                                                                                                                                      
+total 1724536
+-rwxrwxr-x 1 itachi-62 itachi-62         74 Sep  1 16:04  add.sh
+-rwxrwxr-x 1 itachi-62 itachi-62      16088 Sep 30 10:01  a.out
+-rw-rw-r-- 1 itachi-62 itachi-62 1378795520 Aug  1 19:11  archlinux-x86_64.iso
+-rwxrwxr-x 1 itachi-62 itachi-62      15952 Aug 21 21:58  array
+
+Q2. Write the command to create a new directory named 123test_dir. 
+
+->mkdir 123test_dir
+output: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ mkdir 123test_dir
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ find 123test_dir
+123test_dir
+
+Q3. What is the purpose of the sed command? Justify with proper example. 
+
+-> sed is a stream editor, it is used to read text streams or files and perform scripted edits(substitute, delete,insert,print) non-interactively.It is great for automated text transformations in pipelines and scripts.
+
+Q4.Which distinct command is used to display one-line descriptions of any commands?
+
+-> whatis ls --shows only the description of ls.
+output: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ whatis ls
+ls (1)               - list directory contents
+
+Q5. Write the command to create an empty file named “notes.txt”. 
+
+-> touch notes.txt --it is the command to create an empty file named "notes.txt".
+
+Q6. Differentiate between grep and awk commands with an example.
+
+grep:-
+-> It is used to search lines that match a pattern and print the whole matching lines.
+-> use grep for fast existence or line searches.
+output: 
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ grep 'admin' data.txt                                                                                                                                                                      
+alice 100 admin
+charlie 150 admin
+
+awk:-
+-> It is a fiel-oriented programming language for scanning, selecting by patterns and processing fields.
+-> use awk when you need structured field processing or calculations.
+output:
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ awk '/admin/ {print $1, $2}' data.txt                                                                                                                                                      
+alice 100
+charlie 150
+
+Q7.Write the command to give read, write, and execute permission to the owner of
+a file script.sh.
+
+-> chmod u+rwx script.sh --use this only if you want to just give the owner permissions and no other changes.
+
+-> chmod 700 script.sh --use thi sif you want to give permissions only to the owner and not the group or others. 
+
+Q8.How is chown different from chgrp? Give one example for each.
+
+->chown -- is is used to change the owner of a file.
+output:
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l demo.c                                                                                                                                                                               
+-rw------- 1 itachi-62 itachi-62 0 Sep 16 16:06 demo.c
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ sudo chown hacker demo.c                                                                                                                                                                
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l demo.c                                                                                                                                                                
+-rw------- 1 hacker itachi-62 0 Sep 16 16:06 demo.c
+
+->chgrp -- is used to change the group only.
+output:
+ ┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l demo.c                                                                                                                                                                               
+-rw------- 1 hacker hacker 0 Sep 16 16:06 demo.c
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ sudo chgrp itachi-62 demo.c
+
+┌──(itachi-62㉿itachi-62)-[~]
+└─$ ls -l demo.c                                                                                                                                                                               
+-rw------- 1 hacker itachi-62 0 Sep 16 16:06 demo.c
+
+Q9. A user complains that they cannot execute a file even though it exists in their directory. How would you troubleshoot this using ls -l, chmod, and whoami?
+
+-> first I will use ls -l filename to check the file permissions.
+-> then using whoami i will check in which i am in and will check if the user has the permission to execute the file.
+-> if the user does not have the permission to execute the file, then using chmod u+x filename to give the user permission to execute the file.
+
+ Q10. Design a command pipeline to: find all .log files modified in the last 2 days in /var/log, display them on screen, and save the results into a file recent_logs.txt using tee command. 
+
+->sudo find /var/log -type f -name '*.log' -mtime -2 -print | tee recent_logs.txt
+
+->sudo — /var/log often contains files owned by root, so sudo ensures find can read the directory.
+
+->find /var/log — search starting at /var/log.
+->type f — only regular files.
+->name '*.log' — match .log files (quoted to prevent shell expansion).
+->mtime -2 — files modified less than 2 days ago (i.e., within the last 48 hours).
+->print — output each match on a new line.
+->| tee recent_logs.txt — displays results to your terminal and writes them to recent_logs.txt. (tee overwrites the file by default; to append use tee -a recent_logs.txt.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

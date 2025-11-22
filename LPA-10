@@ -1,0 +1,162 @@
+Linux Programming
+Assignment-10
+
+Name: Gujjula Mohan Krishna Reddy
+USN: ENG24CY0109
+Roll No: 50
+SEC: 3-C
+
+
+COMMAND 1:  yum remove
+
+(1) What is the command? (History, Invention, Authors)
+	The command yum remove (or yum erase) is a very critical command in the Yellowdog Updater,Modified (YUM) package management system. It is an open-source command line used in RPM-compatible Linux distributions (like Red Hat Enterprise Linux, CentOS, Fedora, and Oracle Linux) to uninstall software packages and manage the complex web dependencies associated with them.
+
+History and Invention:
+	Before Linux admins used to manage software using the raw rpm(Red Hat Pakage Manager) command. But it used to created a significant problem known as Dependency Hell. If an admin tries to uninstall a package using rpm -e, the system would often fail or break because the command did not know how to handle shared libraries.
+
+To solve this, Seth Vidal and a group of developers at Duke University created YUM in 2003.
+They modified and rewrote and already existing tool called Yellowdog Updater (originally for Yellow Dog Linux on PowerPC) to utilize Python and XML metadata. Seth’s primary innovation was the dependency solver, it is an algorithm that could calculate exactly what is needed to be removed or kept to ensure system stability.
+
+Seth passed away in 2013, but his work became standard for RHEL systems for over a decade. While modern systems (RHEL 8+) use dnf (Dandified YUM) as the backend, the command yum remove remains the standard syntax used by millions of administrators globally, now acting as a compatibility layer for the newer technology.
+
+(2) Why is this useful for a System Administrator?
+	For a system admin, yum remove is not just about deleting programs, it is a tool for System Hygiene,Security and Stability.
+1. Reduction of Attack Surface: Every software package installed on a system is a potential entry point for a hacker. If a package like tomcat or php is installed but not used, it sits there unpatched. yum remove allows admins to remove or delete these unused packages making the system more secure.
+2. Dependency Safety Net: The most dangerous thing an admin can do is delete a file that the Kernel or the Shell relies on. yum remove performs a transaction check before doing its work. If an admin tries to remove openssl, YUM will warn them: Warning: Removing this will also remove the SSH server and lock you out. This safety logic is invaluable.
+3. Disk Space and Bloat Management: Over years of operation, systems accumulate orphan packages,i.e, libraries installed as dependencies for software that was deleted years ago. Using yum remove in conjunction with cleanup plugins helps reclaim gigabytes of expensive storage space in enterprise SAN environments.
+4. Conflict Resolution: When upgrading major software versions, the old packages often conflict with the new ones. yum remove ensures that all traces of the old version(including binaries, doc files, and headers) are completely wiped to allow a clean installation of the new version.
+(3) How does the command work? (Mechanism & Example)
+	The yum remove command operates by interacting with the RPM Database (a SQLite database located at /var/lib/rpm) and the YUM repository metadata.
+Working:-
+1. Parsing: The command reads the user input (yum remove httpd).
+2. Dependency Resolution (The Solver): YUM queries the database for the package httpd. It then checks the Required By fields of all other installed packages. For example, if Package A requires Package B, and you try to remove Package B, YUM calculates that Package A must also die.
+3. Transaction Test: YUM simulates the removal in memory to ensure no file path conflicts occur.
+4. Script Execution:
+    • Runs the %preun (Pre-Uninstall) script: Stops the running service.
+    • Filesystem Deletion: Unlinks the binaries and manuals.
+    • Runs the %postun (Post-Uninstall) script: Reloads system daemons.
+5. Database Update: Removes the package entry from the local RPM database.
+Example: Imagine you want to remove the Apache Web Server (httpd). When you run sudo yum remove httpd, YUM detects that httpd-tools and mod_ssl depend on the main server. It adds them to the list automatically.
+(4) Snapshots of Command Execution
+[root@server ~]# yum remove nmap
+Loaded plugins: fastestmirror, langpacks
+Resolving Dependencies
+--> Running transaction check
+---> Package nmap.x86_64 2:6.40-19.el7 will be erased
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=============================================================================
+ Package       Arch         Version              Repository         Size
+=============================================================================
+Removing:
+ nmap          x86_64       2:6.40-19.el7        @base              19 M
+
+Transaction Summary
+=============================================================================
+Remove  1 Package
+
+Installed size: 19 M
+Is this ok [y/N]: y
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Erasing    : 2:nmap-6.40-19.el7.x86_64                                 1/1 
+  Verifying  : 2:nmap-6.40-19.el7.x86_64                                 1/1 
+
+Removed:
+  nmap.x86_64 2:6.40-19.el7                                                  
+
+Complete!
+
+
+(5) Detailed Options and Flags
+1. -y or --assumeyes
+    • Description: This flag bypasses the critical confirmation prompt (Is this ok [y/N]).
+    • Usage: Essential for automated scripts (Shell/Ansible) where no human is present to type y.
+    • Risk: High. If the dependency solver decides to remove the desktop environment to satisfy the request, it will do so immediately without warning.
+2. --remove-leaves
+    • Description: Removes the specified package AND any dependencies that were installed solely for that package and are no longer needed.
+    • Usage: yum remove --remove-leaves <package>. This prevents dependency drool (leftover useless libraries) from accumulating on the server.
+    • Note: Often requires the yum-plugin-remove-with-leaves package.
+3. --noautoremove
+    • Description: Explicitly tells YUM not to remove unused dependencies.
+    • Usage: Useful when you are uninstalling a compiler (like GCC) but want to keep the math libraries it installed because you plan to use them for a different project.
+4. --setopt=<option>=<value>
+    • Description: Allows the administrator to override a configuration from /etc/yum.conf for just this one command execution.
+    • Usage: yum remove --setopt=clean_requirements_on_remove=1 httpd. This can force a stricter cleanup policy temporarily.
+5. -C or --cacheonly
+    • Description: Forces YUM to run entirely from the system cache, without connecting to the internet or network repositories.
+    • Usage: Useful when the server is offline or has a broken DNS connection, but you still need to remove a package using local metadata.
+6. -v or --verbose
+    • Description: Outputs high-level debugging information.
+    • Usage: Shows exactly which version, architecture, and repository the package is being removed from, and details the logic the Solver used to make its decisions.
+
+COMMAND 2:  unexpand
+
+(1) What is the command? (History, Invention, Authors)
+	The unexpand command is a classic text processing utility found in Unix and Unix-like operating systems. It is part of the GNU Coreutils (Core Utilities) package, which forms the foundational toolset of Linux systems.
+
+History and Invention: The concept of unexpand dates back to the early days of AT&T Unix in the 1970s. It was created as a companion to the expand command.
+    • The Original Need: In early computing, storage was incredibly expensive (cents per byte). A "Tab" character takes up 1 byte of storage. A visual gap of 8 Spaces takes up 8 bytes of storage. By converting spaces to tabs, early engineers could significantly compress source code and text files.
+    • Authors: The modern GNU version of unexpand commonly used in Linux today was written by David MacKenzie. It adheres to the POSIX (Portable Operating System Interface) standards, ensuring it behaves consistently across different Unix flavors (Solaris, BSD, Linux).
+(2) Why is this useful for a System Administrator?
+
+While it seems like a simple formatting tool, unexpand is crucial for specific administrative and development tasks:
+    1. The Makefile Requirement: In Linux software development, a Makefile is a script used to compile programs. Makefiles have a strict syntax rule: commands must be indented with Tabs, not Spaces. If a developer uses spaces, the build fails. unexpand is the standard tool used to fix broken Makefiles by converting the spaces to tabs.
+    2. Standardizing Configuration Files: When managing a fleet of servers, config files (like nginx.conf or yaml files) need to be consistent. unexpand helps enforce a Tab-only policy across files edited by different people with different text editor settings.
+    3. Log File Processing: Admins often deal with legacy log files from mainframes or older applications that use fixed-width columns padded with spaces. Converting these to tab-separated values (TSV) using unexpand makes it much easier to import logs into Excel or databases.
+    4. Python vs. The World: Python relies on indentation. Mixing tabs and spaces crashes the program. unexpand is used to sanitize code to ensure only one type of whitespace is used.
+
+(3) How does the command work? (Mechanism & Example)
+
+The unexpand command works based on the concept of Tab Stops. By default, Unix systems place a Tab Stop every 8 columns (at column 8, 16, 24, 32...).
+The Internal Process:
+    1. Reading: The command reads the file character by character.
+    2. Counting: It counts consecutive Space characters (ASCII 32).
+    3. Calculating: It checks the current cursor position against the next Tab Stop.
+        ◦ If unexpand sees 5 spaces, but the next Tab Stop is only 2 columns away, it might not convert them (depending on flags).
+        ◦ If it sees 8 spaces starting at column 0, it deletes the 8 bytes and inserts 1 byte (\t, ASCII 9).
+    4. Writing: It outputs the modified stream to Standard Output (stdout).
+Example: Imagine a file code.txt containing text indented by 8 spaces.
+    • Input: [Space][Space][Space][Space][Space][Space][Space][Space]print("Hello")
+    • Command: unexpand code.txt
+    • Process: The utility sees 8 spaces. It replaces them with 1 Tab.
+    • Output: [Tab]print("Hello")
+
+(4) Snapshots of Command Execution
+
+Step 1: Create a file with Spaces We use echo to create a file with 8 spaces between words.
+echo "Column1        Column2" > testfile.txt
+Step 2: Verify Spaces are present We use cat -A (show all) to see the spaces. Spaces show as dots (.) or blank gaps.
+cat -A testfile.txt
+utput: Column1        Column2$
+Step 3: Run unexpand We convert the spaces to tabs and save to a new file.
+unexpand -a testfile.txt > tabbedfile.txt
+Step 4: Verify the Conversion We check the new file. Tabs show as ^I.
+cat -A tabbedfile.txt
+Output: Column1^IColumn2$
+(5) Detailed Options and Flags
+
+   1. -a or --all
+        ◦ Description: By default, unexpand only converts leading spaces (indentation at the start of the line). This flag tells it to convert all sequences of two or more spaces into tabs, even in the middle of a sentence.
+        ◦ Usage: unexpand -a data.txt. Essential for converting table data.
+    2. --first-only
+        ◦ Description: Forces the command to only convert leading whitespace. This is the default behavior, but the flag is useful to override a previously set alias.
+        ◦ Usage: Critical for source code where you want indentation tabbed, but you don't want to ruin the spacing inside a string like msg = "Hello World".
+    3. -t <N> or --tabs=<N>
+        ◦ Description: Changes the tab stop width from the default 8 to a custom number (e.g., 4).
+        ◦ Usage: unexpand -t 4 file.py. This is widely used in modern programming where 4 spaces is the standard indentation, not 8.
+    4. -t <list> (Variable Tab Stops)
+        ◦ Description: Allows you to set specific column numbers for tab stops, comma-separated (e.g., 5,10,20).
+        ◦ Usage: unexpand -t 10,20,30 database_dump.txt. Used for processing fixed-width data files from legacy systems where columns have specific, rigid widths.
+    5. --help
+        ◦ Description: Displays the summarized manual page, listing all valid options and syntax.
+        ◦ Usage: unexpand --help.
+    6. --version
+        ◦ Description: Outputs the version information of the GNU Coreutils package.
+        ◦ Usage: Useful for scripts to check if the installed version supports advanced features like variable tab lists.
